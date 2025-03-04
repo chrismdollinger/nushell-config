@@ -5,4 +5,7 @@
 # See https://www.nushell.sh/book/configuration.html
 #
 const config_repo = ('/Users/chris/source/repos/nushell-config/config.nu' | path dirname)
-use ( $config_repo + '/modules/' + $nu.os-info.family )
+use ( $config_repo + '/modules/' + $nu.os-info.name )
+
+mkdir ($nu.data-dir | path join "vendor/autoload")
+starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
