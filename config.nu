@@ -6,6 +6,7 @@
 #
 const config_repo = ('/Users/chris/source/repos/nushell-config/config.nu' | path dirname)
 use ( $config_repo + '/modules/' + $nu.os-info.name )
+use ( $config_repo + '/modules/oracle' )
 
 mkdir ($nu.data-dir | path join "vendor/autoload")
 starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
