@@ -4,6 +4,10 @@
 # (or import) custom commands, or run any other startup tasks.
 # See https://www.nushell.sh/book/configuration.html
 #
+
+export-env {
+    $env.EDITOR = 'nvim'
+}
 const config_repo = ('/Users/chris/source/repos/nushell-config/config.nu' | path dirname)
 use ( $config_repo + '/modules/' + $nu.os-info.name )
 use ( $config_repo + '/modules/oracle' )
