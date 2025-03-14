@@ -7,8 +7,9 @@
 
 export-env {
     $env.EDITOR = 'nvim'
+    $env.REPO_HOME = ( $nu.home-path + '/source/repos' )
 }
-const config_repo = ('/Users/chris/source/repos/nushell-config/config.nu' | path dirname)
+const config_repo = ( $nu.home-path + '/source/repos/nushell-config' )
 use ( $config_repo + '/modules/' + $nu.os-info.name )
 use ( $config_repo + '/modules/oracle' )
 use ( $config_repo + '/modules/rust' )
