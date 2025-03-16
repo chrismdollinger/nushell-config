@@ -5,6 +5,8 @@
 # See https://www.nushell.sh/book/configuration.html
 #
 
+$env.PATH = ( $env.PATH | split row ( char esep) )
+
 export-env {
     $env.EDITOR = 'nvim'
     $env.REPO_HOME = ( $nu.home-path + '/source/repos' )
