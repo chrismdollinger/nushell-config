@@ -6,6 +6,7 @@
 #
 
 $env.PATH = ( $env.PATH | split row ( char esep) )
+$env.config.show_banner = false
 
 export-env {
     $env.EDITOR = 'nvim'
