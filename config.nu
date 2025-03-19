@@ -17,6 +17,7 @@ use ( $config_repo + '/modules/' + $nu.os-info.name )
 use ( $config_repo + '/modules/oracle' )
 use ( $config_repo + '/modules/rust' )
 use ( $config_repo + '/modules/javalet' )
+use ( $config_repo + '/modules/dotnetlet' )
 
 mkdir ($nu.data-dir | path join "vendor/autoload")
 starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
