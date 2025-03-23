@@ -11,4 +11,5 @@ export-env {
         '/usr/sbin'
         '/sbin'
     ]
+    $env.JAVA_BASE = '/Library/Java/JavaVirtualMachines/*/Contents/'
 }

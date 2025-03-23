@@ -4,7 +4,7 @@ export def main []: nothing -> nothing {
 }
 
 # glob search for JDK installations by the `release` file. Searches $env.JAVA_BASE by default
-export def jdks []: [ glob -> table, nothing -> table ] {
+export def jdks []: [ string -> table, nothing -> table ] {
     $in | default $env.JAVA_BASE? |
         path join "*/release" | glob $in | wrap "release_file"
 }
@@ -26,7 +26,9 @@ export def releaseinfo [
 
 
 export-env {
-    $env.JAVA_BASE = $env.HOME | path join ".local/java"
+    $env.JAVA_BASE = $env.JAVA_BASE? | default ( # Defer to any existing JAVA_BASE
+        $env.HOME | path join ".local/java"
+    )
     $env.JAVA_HOME = (
         jdks | $in.release_file | path dirname | sort-by --reverse {
             releaseinfo $in | $in.JAVA_VERSION
