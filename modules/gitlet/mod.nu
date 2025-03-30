@@ -1,7 +1,7 @@
-# Gitlet - wrapper for running `git` and `gstat` on multiple repositories at once
+# Gitlet - quickly perform actions on multiple git repositories at once
 # Defaults to `gitlet status` is no subcommands are specified
 export def main [
-    filter?: string # Optional extra filter, for when it is desired to use the default search *and* a filter
+    filter?: string # Optional extra filter, defaults to "**"
 ]: [
     string -> table
     nothing -> table
@@ -9,10 +9,10 @@ export def main [
     $in | status $filter
 }
 
-# List all git repositories filtered by a glob expression received from the pipeline
-# If no string is received, default to $env.REPO_HOME/* or $env.PWD/*
+# List all git repositories found by glob expression
+# If no glob expression is received from the pipeline, default to $env.REPO_HOME/* or $env.PWD/*
 export def list [
-    filter?: string # Optional extra filter, for when it is desired to use the default search *and* a filter
+    filter?: string # Optional extra filter, defaults to "**"
 ]: [
     string -> list<string>
     nothing -> list<string>
@@ -26,9 +26,10 @@ export def list [
     }
 }
 
-# Gitlet Status - check all of your repositories' statuses at once
+# Gitlet Status - summarize the status of multiple repositories at once
+# Accepts a glob expression to pass to `gitlet list`, and returns a short status of each repository found
 export def status [
-    filter?: string # Optional extra filter, for when it is desired to use the default search *and* a filter
+    filter?: string # Optional extra filter, defaults to "**"
 ]: [
     string -> table
     nothing -> table
@@ -41,10 +42,9 @@ export def status [
     $gstat_raw | select repo_name branch staged unstaged ignored conflicts ahead behind stashes
 }
 
-# Gitlet Pull - run a `git pull` and check all of your repositories' statuses at once
-# If no string is received, default to $env.REPO_HOME/* or $env.PWD/*
+# Gitlet Pull - run a `git pull` before `gitlet status`
 export def pull [
-    filter?: string # Optional extra filter, for when it is desired to use the default search *and* a filter
+    filter?: string # Optional extra filter, defaults to "**"
 ]: [
     string -> table
     nothing -> table
