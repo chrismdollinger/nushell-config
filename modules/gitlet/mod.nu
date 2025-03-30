@@ -1,7 +1,7 @@
 # Gitlet - quickly perform actions on multiple git repositories at once
 # Defaults to `gitlet status` is no subcommands are specified
 export def main [
-    subglob?: string # Optional extra subglob, defaults to "**"
+    subglob?: string@subglob_completor # Optional extra subglob, defaults to "**"
 ]: [
     string -> table
     nothing -> table
@@ -12,7 +12,7 @@ export def main [
 # List all git repositories found by glob expression
 # If no glob expression is received from the pipeline, default to $env.REPO_HOME/* or $env.PWD/*
 export def list [
-    subglob?: string # Optional extra subglob, defaults to "**"
+    subglob?: string@subglob_completor # Optional extra subglob, defaults to "**"
 ]: [
     string -> list<string>
     nothing -> list<string>
@@ -29,7 +29,7 @@ export def list [
 # Gitlet Status - summarize the status of multiple repositories at once
 # Accepts a glob expression to pass to `gitlet list`, and returns a short status of each repository found
 export def status [
-    subglob?: string # Optional extra subglob, defaults to "**"
+    subglob?: string@subglob_completor # Optional extra subglob, defaults to "**"
 ]: [
     string -> table
     nothing -> table
@@ -44,7 +44,7 @@ export def status [
 
 # Gitlet Pull - run a `git pull` before `gitlet status`
 export def pull [
-    subglob?: string # Optional extra subglob, defaults to "**"
+    subglob?: string@subglob_completor # Optional extra subglob, defaults to "**"
 ]: [
     string -> table
     nothing -> table
@@ -52,4 +52,17 @@ export def pull [
     let main_in = $in
     $main_in | list $subglob | each { git -C $in pull --prune }
     $main_in | status $subglob
+}
+
+# Quick completor for the `subglob` parameter - in case you only want to run a gitlet on a single repository
+def subglob_completor [] {
+    {
+        options: {
+            case_sensitive: false,
+            completion_algorithm: prefix,
+            positional: false,
+            sort: false,
+        },
+        completions: ( $in | list | path basename )
+    }
 }
