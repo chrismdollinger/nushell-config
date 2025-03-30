@@ -18,13 +18,15 @@ export def list [
     string -> table
     nothing -> table
 ] {
-    let path: string = $in | default $env.REPO_HOME | default $env.PWD
-    let filter = $filter | default '*'
-    let search_path: string = $path | path join $filter
+    let search_path: string = $in | default $env.REPO_HOME | default $env.PWD
+    let filter = $filter | default "**"
+    let search_glob: string = $search_path | path join $filter ".git"
 
-    glob $search_path --no-file --exclude [ **/.git/** ] |
-        wrap "path" |
-        insert repo {|row| $row.path | path basename }
+    glob $search_glob --no-file --no-symlink | each {
+            path join ".." | path expand
+        } | wrap "path" | insert repo {|row|
+            $row.path | path basename
+        }
 }
 
 # Gitlet Status - check all of your repositories' statuses at once
