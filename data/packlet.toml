@@ -1,0 +1,32 @@
+# Metadata for the Nushell module "packlet"
+# Tables are named for their subcommands (ex. `packlet source list` will pull from the 'source_list' table
+# Dynamic parameters
+# # Any strings wrapped in !{curly braces preceded by an exclamation mark} will be parsed as a command to be executed during runtime
+# # Any strings wrapped in ${curly braces preceded by a dollar sign} will be parsed as a configuration table entry
+
+[source_list]
+download_directory = "!{mktemp -t -d packlet_${source_list.name}}"
+install_directory = "!{$env.HOME}/.local/packlet"
+
+[source_list.github_releases]
+name = "github_releases"
+os_support = []
+download_directory = "/tmp"
+
+[source_list.apt]
+name = "apt"
+os_support = "linux" # TODO packlet source list - check $nu.os-info to verify os_support for a source
+linux_support = [ # TODO packlet source list - check multiple fields in /etc/os-release for a supported linux source
+    "pop",
+    "ubuntu"
+]
+
+
+[pack_search]
+
+[pack_search.cascadia-code]
+name = "microsoft/cascadia-code"
+friendly_name = "cascadia-code"
+source = "github_releases"
+
+
