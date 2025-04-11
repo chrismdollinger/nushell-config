@@ -3,10 +3,12 @@
 export def main []: nothing -> nothing {
 }
 
-# glob search for JDK installations by the `release` file. Searches $env.JAVA_BASE by default
+# search for JDK installations by the `release` file. Searches $env.JAVA_BASE by default
+# uses `ls` instead of `glob` for cross-compatibility with Windows
 export def jdks []: [ string -> table, nothing -> table ] {
-    $in | default $env.JAVA_BASE? |
-        path join "*/release" | glob $in | wrap "release_file"
+    $in | default $env.JAVA_BASE? | ls $in | each {
+        $in.name | path join "release"
+    } | wrap "release_file"
 }
 
 # return the contents of a JAVA_HOME's 'release' file as a table
@@ -34,6 +36,6 @@ export-env {
             releaseinfo $in | $in.JAVA_VERSION
         }
     ).0
-    $env.PATH = $env.PATH | append ( $env.JAVA_HOME | path join 'bin' )
+    $env.PATH = $env.PATH | append ( if ( which java | length ) == 0 { $env.JAVA_HOME | path join 'bin' } else { null } )
 }
 
