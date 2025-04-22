@@ -5,15 +5,12 @@
 def llvm-search [
     vs_path?: string
 ] {
-    $vs_path | default (
-        $env | select "ProgramFiles(x86)" | values | first | path join "Microsoft Visual Studio" "2022" "BuildTools"
-    ) | try {
-        ls ( $in | path join "VC" "Tools" "Llvm" )
-    } catch {
+    $vs_path | default ( $env.PROGRAMFILES | path join "Microsoft Visual Studio" "2022" "Community" "VC" "Tools" "Llvm" ) |
+    if not ( $in | path exists ) {
         return null
-    } |
-    select name | values | flatten | sort --reverse | first |
-    path join "bin"
+    } else {
+        $in | path join "bin"
+    }
 }
 
 export-env {
