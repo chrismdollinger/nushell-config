@@ -9,14 +9,13 @@ $env.PATH = ( $env.PATH | split row ( char esep) )
 $env.config.show_banner = false
 
 export-env {
-    $env.EDITOR = 'vim'
+    $env.EDITOR = 'nvim'
     $env.REPO_HOME = ( $nu.home-path + '/source/repos' )
 }
 const config_repo = ( $nu.home-path + '/source/repos/nushell-config' )
 use ( $config_repo + '/modules/' + $nu.os-info.name )
 use ( $config_repo + '/modules/oracle' )
 use ( $config_repo + '/modules/rust' )
-use ( $config_repo + '/modules/javalet' )
 use ( $config_repo + '/modules/dotnetlet' )
 use ( $config_repo + '/modules/gitlet' )
 
